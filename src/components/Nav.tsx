@@ -92,11 +92,33 @@ export default function Nav() {
   const plan = PLANS[tab];
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 flex justify-center px-2.5 py-6">
-      <motion.nav
-        ref={navRef}
-        layout
-        transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+    <>
+      {/* Backdrop behind the expanded nav — blurs the page with a subtle radial tint */}
+      <AnimatePresence>
+        {expanded && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+            onClick={() => setExpanded(false)}
+            aria-hidden
+            className="fixed inset-0 z-40"
+            style={{
+              background:
+                "radial-gradient(13.36% 95.22% at 50% -15.45%, rgba(24,24,27,0.00) 0%, rgba(24,24,27,0.01) 100%)",
+              backdropFilter: "blur(12px)",
+              WebkitBackdropFilter: "blur(12px)",
+            }}
+          />
+        )}
+      </AnimatePresence>
+
+      <header className="fixed inset-x-0 top-0 z-50 flex justify-center px-2.5 py-6">
+        <motion.nav
+          ref={navRef}
+          layout
+          transition={{ duration: 0.4, ease: [0.65, 0, 0.35, 1] }}
         style={{ background: expanded ? "rgba(13,12,12,0.6)" : "var(--nav-bg)" }}
         className={`relative flex flex-col overflow-hidden border border-white/[0.08] p-2 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.08),0_8px_40px_-8px_rgba(0,0,0,0.6)] backdrop-blur-2xl backdrop-saturate-150 ${
           expanded
@@ -168,10 +190,7 @@ export default function Nav() {
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: "auto", opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
-              transition={{
-                height: { duration: 0.4, ease: [0.22, 1, 0.36, 1] },
-                opacity: { duration: 0.25, ease: "easeInOut" },
-              }}
+              transition={{ duration: 0.4, ease: [0.65, 0, 0.35, 1] }}
               className="overflow-hidden"
             >
               <div className="flex flex-col gap-6 px-1 pb-1 pt-5">
@@ -258,6 +277,7 @@ export default function Nav() {
           )}
         </AnimatePresence>
       </motion.nav>
-    </header>
+      </header>
+    </>
   );
 }
