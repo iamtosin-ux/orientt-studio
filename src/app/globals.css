@@ -22,6 +22,7 @@
 
   --font-sans: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
   --font-pixel: var(--font-pixel), ui-monospace, monospace;
+  --font-inter: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
 }
 
 html {
