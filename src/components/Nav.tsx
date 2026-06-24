@@ -143,7 +143,7 @@ export default function Nav() {
           >
             <span className="pointer-events-none absolute inset-0 rounded-full shadow-[inset_0_0_0_1px_rgba(255,255,255,0.1)]" />
             <motion.span
-              animate={{ rotate: expanded ? 135 : 0 }}
+              animate={{ rotate: expanded ? 45 : 0 }}
               transition={{ duration: 0.55, ease: [0.65, 0, 0.35, 1] }}
               className="grid place-items-center"
             >
