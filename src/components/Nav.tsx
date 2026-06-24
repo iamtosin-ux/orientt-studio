@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { AnimatePresence, motion } from "motion/react";
 
@@ -8,10 +8,33 @@ const BOOK_A_CALL_URL = "https://cal.com/samuel-tosin/30min";
 
 const SERVICES = ["Product design", "Website", "Mobile apps"];
 const PRICING_TABS = ["Basic", "Pro", "One-off"] as const;
-const FEATURES = [
-  ["Dedicated partnership", "Up to 40hours design hours per month"],
-  ["One week trial", "Continuous iteration till we hit the mark"],
-];
+
+const PLANS = {
+  Basic: {
+    cadence: "Billed Monthly",
+    price: "£3500",
+    columns: [
+      ["Dedicated partnership", "Up to 40hours design hours per month"],
+      ["One week trial", "Continuous iteration till we hit the mark"],
+    ],
+  },
+  Pro: {
+    cadence: "Billed Monthly",
+    price: "£5000",
+    columns: [
+      ["Dedicated partnership", "Up to 60hours design hours per month"],
+      ["One week trial", "Continuous iteration till we hit the mark"],
+    ],
+  },
+  "One-off": {
+    cadence: "Starting from",
+    price: "£2500",
+    columns: [
+      ["Scoped per project with clear milestone", "50% on commission"],
+      ["One week trial", "Continuous iteration till we hit the mark"],
+    ],
+  },
+} as const;
 
 function ArrowRight() {
   return (
@@ -44,10 +67,34 @@ function Check() {
 export default function Nav() {
   const [expanded, setExpanded] = useState(false);
   const [tab, setTab] = useState<(typeof PRICING_TABS)[number]>("Basic");
+  const navRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    if (!expanded) return;
+
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setExpanded(false);
+    };
+    const onPointerDown = (e: PointerEvent) => {
+      if (navRef.current && !navRef.current.contains(e.target as Node)) {
+        setExpanded(false);
+      }
+    };
+
+    document.addEventListener("keydown", onKeyDown);
+    document.addEventListener("pointerdown", onPointerDown);
+    return () => {
+      document.removeEventListener("keydown", onKeyDown);
+      document.removeEventListener("pointerdown", onPointerDown);
+    };
+  }, [expanded]);
+
+  const plan = PLANS[tab];
 
   return (
     <header className="fixed inset-x-0 top-0 z-50 flex justify-center px-2.5 py-6">
       <motion.nav
+        ref={navRef}
         layout
         transition={{ type: "spring", stiffness: 260, damping: 30 }}
         style={{ background: expanded ? "rgba(13,12,12,0.6)" : "var(--nav-bg)" }}
@@ -179,15 +226,15 @@ export default function Nav() {
 
                 <div className="flex flex-col gap-6 rounded-xl border-2 border-[rgba(111,111,111,0.6)] bg-gradient-to-b from-[#161617] to-[#3c3c3c] px-2.5 py-3">
                   <div>
-                    <p className="text-base leading-8 text-[#71717a]">Billed Monthly</p>
+                    <p className="text-base leading-8 text-[#71717a]">{plan.cadence}</p>
                     <div className="flex items-end gap-1 font-semibold text-white">
-                      <span className="text-[32px] leading-10">£3500</span>
+                      <span className="text-[32px] leading-10">{plan.price}</span>
                       <span className="pb-1 text-sm">GBP</span>
                     </div>
                   </div>
 
                   <div className="flex gap-0.5">
-                    {FEATURES.map((col, i) => (
+                    {plan.columns.map((col, i) => (
                       <ul key={i} className="flex flex-1 flex-col gap-4">
                         {col.map((f) => (
                           <li key={f} className="flex items-start gap-1.5">
