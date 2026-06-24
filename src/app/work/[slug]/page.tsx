@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { compileMDX } from "next-mdx-remote/rsc";
 import type { Metadata } from "next";
 import { getProject, getProjectSlugs } from "@/lib/work";
+import SectionTracker from "@/components/SectionTracker";
 
 export function generateStaticParams() {
   return getProjectSlugs().map((slug) => ({ slug }));
@@ -86,20 +87,10 @@ export default async function CaseStudyPage({
         <span className="truncate text-sm text-white/60">{meta.subtitle}</span>
       </header>
 
-      <div className="mx-auto grid max-w-6xl grid-cols-1 gap-12 px-6 py-16 lg:grid-cols-[200px_1fr]">
-        {/* Table of contents */}
+      <div className="mx-auto grid max-w-6xl grid-cols-1 gap-12 px-6 py-16 lg:grid-cols-[280px_1fr]">
+        {/* Section tracker */}
         <aside className="hidden lg:block">
-          <nav className="sticky top-28 flex flex-col gap-3">
-            {meta.sections.map((section) => (
-              <a
-                key={section}
-                href={`#${slugify(section)}`}
-                className="text-sm text-white/40 transition-colors hover:text-white"
-              >
-                {section}
-              </a>
-            ))}
-          </nav>
+          <SectionTracker sections={meta.sections} />
         </aside>
 
         {/* Content */}

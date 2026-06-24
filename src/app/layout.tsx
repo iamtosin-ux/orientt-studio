@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { Geist, Handjet, Inter } from "next/font/google";
+import { Geist, Inter } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 
 const geist = Geist({
@@ -13,12 +14,11 @@ const inter = Inter({
   subsets: ["latin"],
 });
 
-// Dot-matrix display face, used to approximate Figma's "Geist Pixel"
-// for accent words like "ship" and the "ShowReel.mp4" labels.
-const pixel = Handjet({
+// Figma's "Geist Pixel: Triangle" — accent words like "ship" and ShowReel labels
+const pixel = localFont({
+  src: "./fonts/GeistPixel-Triangle.woff2",
   variable: "--font-pixel",
-  subsets: ["latin"],
-  weight: ["400", "500"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {

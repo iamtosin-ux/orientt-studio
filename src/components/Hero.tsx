@@ -30,7 +30,7 @@ export default function Hero() {
                 alt={logo.alt}
                 width={logo.width}
                 height={logo.height}
-                className="h-5 w-auto opacity-90 transition-opacity duration-200 hover:opacity-100"
+                className="h-6 w-auto opacity-90 transition-opacity duration-200 hover:opacity-100"
               />
             ))}
             {/* patch = icon + wordmark */}
@@ -47,7 +47,7 @@ export default function Hero() {
                 alt="Patch"
                 width={64}
                 height={20}
-                className="h-5 w-auto"
+                className="h-6 w-auto"
               />
             </span>
           </div>
