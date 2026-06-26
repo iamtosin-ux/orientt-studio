@@ -93,6 +93,27 @@ export default function Nav() {
     };
   }, [expanded]);
 
+  // Sections opt into a light backdrop with data-nav-theme="light";
+  // the CTA flips from its blue tint to a white, dark-text variant.
+  const [navTheme, setNavTheme] = useState<"dark" | "light">("dark");
+  useEffect(() => {
+    const els = Array.from(document.querySelectorAll<HTMLElement>("[data-nav-theme]"));
+    if (!els.length) return;
+    const obs = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            const t = e.target.getAttribute("data-nav-theme");
+            if (t === "light" || t === "dark") setNavTheme(t);
+          }
+        });
+      },
+      { rootMargin: "-44px 0px -90% 0px", threshold: 0 },
+    );
+    els.forEach((el) => obs.observe(el));
+    return () => obs.disconnect();
+  }, []);
+
   const plan = PLANS[tab];
   const widthClass =
     mode === "book"
@@ -140,14 +161,24 @@ export default function Nav() {
             type="button"
             onClick={() => setMode((m) => (m === "book" ? null : "book"))}
             aria-expanded={mode === "book"}
-            className="group relative flex h-[39px] w-[192px] items-center justify-center gap-2 rounded-[80px] text-accent-fill transition-transform duration-200 ease-out hover:-translate-y-px active:translate-y-0"
+            className={`group relative flex h-[39px] w-[192px] items-center justify-center gap-2 rounded-[80px] transition-transform duration-200 ease-out hover:-translate-y-px active:translate-y-0 ${
+              navTheme === "light" ? "bg-white text-[#101010]" : "text-accent-fill"
+            }`}
             style={{
               boxShadow:
-                "0px 2px 5px 0px rgba(44,90,218,0.39), 0px 8px 8px 0px rgba(44,90,218,0.1), 0px 0px 30px 0px rgba(44,90,218,0.2)",
+                navTheme === "light"
+                  ? "0px 2px 6px 0px rgba(0,0,0,0.18), 0px 1px 2px 0px rgba(0,0,0,0.12)"
+                  : "0px 2px 5px 0px rgba(44,90,218,0.39), 0px 8px 8px 0px rgba(44,90,218,0.1), 0px 0px 30px 0px rgba(44,90,218,0.2)",
             }}
           >
-            <span className="pointer-events-none absolute inset-0 rounded-[80px] shadow-[inset_0_0_0_1px_rgba(255,255,255,1)]" />
-            <span className="pointer-events-none absolute inset-0 rounded-[80px] shadow-[inset_0_0_12px_0_rgba(255,255,255,0.08),inset_0_-8px_32px_0_#2c5ada] transition-shadow duration-200 group-hover:shadow-[inset_0_0_12px_0_rgba(255,255,255,0.12),inset_0_-10px_36px_0_#2c5ada]" />
+            {navTheme === "light" ? (
+              <span className="pointer-events-none absolute inset-0 rounded-[80px] shadow-[inset_0_0_0_1px_rgba(0,0,0,0.08)]" />
+            ) : (
+              <>
+                <span className="pointer-events-none absolute inset-0 rounded-[80px] shadow-[inset_0_0_0_1px_rgba(255,255,255,1)]" />
+                <span className="pointer-events-none absolute inset-0 rounded-[80px] shadow-[inset_0_0_12px_0_rgba(255,255,255,0.08),inset_0_-8px_32px_0_#2c5ada] transition-shadow duration-200 group-hover:shadow-[inset_0_0_12px_0_rgba(255,255,255,0.12),inset_0_-10px_36px_0_#2c5ada]" />
+              </>
+            )}
             <span className="text-sm font-semibold">Book an intro call</span>
             <span className="transition-transform duration-200 group-hover:translate-x-0.5">
               <ArrowRight />
