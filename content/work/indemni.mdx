@@ -14,7 +14,7 @@ intro:
 sections:
   - Overview
   - Problem
-  - Solution
+  - How we solved it
   - Outcome
 outcomes:
   - { stat: "$120k+", label: "monthly invoice leakage recoverable for a broker at 6,000 loads/mo" }
@@ -23,26 +23,28 @@ outcomes:
 
 ![Indemni carrier risk dashboard](/work/indemni/fig-hero.png)
 
-![Before and after the redesign](/work/indemni/fig-before-after.png)
-
 ## Problem
 
-Before Indemni, compliance was manual, reactive, and impossible to audit.
-Dispatchers relied on tribal knowledge. Verification was a phone call, a photo on
-a text thread, a gut feeling.
+Before Indemni, compliance was reactive. Verification happened over phone calls.
+Evidence was scattered across texts and email chains. And by the time a dispatcher
+suspected something was wrong, the truck was already on the highway. The pain
+points weren't abstract — they showed up every single day.
+
+## How we solved it
+
+We approached this as two interconnected design problems: the broker who needs to
+triage dozens of active loads at once, and the driver who needs to complete one
+clear task right now. This constraint shaped our design direction. Indemni now
+covers the full lifecycle of a shipment — from carrier vetting before assignment
+to GPS-stamped delivery evidence at drop-off.
+
+![Before and after the redesign](/work/indemni/fig-before-after.png)
 
 ![Carrier verification details](/work/indemni/fig-carriers-1.png)
 
 ![Carrier risk patterns](/work/indemni/fig-carriers-2.png)
 
 ![Carrier evaluation and scoring](/work/indemni/fig-carriers-3.png)
-
-## Solution
-
-The hardest design problem wasn't the UI — it was behavioural. We gated rate con
-and pickup details until verification is complete, so brokers enforce driver
-adoption because it saves them money downstream. Compliance becomes
-self-reinforcing.
 
 ![Rate confirmation, gated until verification](/work/indemni/fig-rate-con.png)
 
@@ -52,7 +54,8 @@ self-reinforcing.
 
 ## Outcome
 
-Compliance that compounds. Every verified load makes the next one faster to
-clear and harder to fake — turning trust into a measurable, defensible asset.
+The result is a system where verification completion is non-optional by design,
+evidence is timestamped and tamper-evident, and brokers never have to wonder
+what's happening with a load.
 
 ![Driver verification and audit trail](/work/indemni/fig-driver.png)

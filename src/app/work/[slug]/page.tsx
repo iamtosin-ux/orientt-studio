@@ -4,6 +4,7 @@ import { compileMDX } from "next-mdx-remote/rsc";
 import type { Metadata } from "next";
 import { getProject, getProjectSlugs } from "@/lib/work";
 import SectionTracker from "@/components/SectionTracker";
+import BeforeAfter from "@/components/BeforeAfter";
 
 export function generateStaticParams() {
   return getProjectSlugs().map((slug) => ({ slug }));
@@ -31,7 +32,7 @@ const mdxComponents = {
   h2: (props: React.ComponentProps<"h2">) => (
     <h2
       id={typeof props.children === "string" ? slugify(props.children) : undefined}
-      className="scroll-mt-28 pt-14 text-xs font-medium uppercase tracking-[0.14em] text-white/40"
+      className="scroll-mt-28 pt-20 text-xs font-medium uppercase tracking-[0.14em] text-white/40"
       {...props}
     />
   ),
@@ -43,11 +44,20 @@ const mdxComponents = {
     if (hasElement) return <>{props.children}</>;
     return <p className="mt-4 text-[15px] leading-7 text-white/60">{props.children}</p>;
   },
-  // eslint-disable-next-line @next/next/no-img-element
-  img: (props: React.ComponentProps<"img">) => (
+  img: (props: React.ComponentProps<"img">) => {
+    const src = typeof props.src === "string" ? props.src : "";
+    // The before/after frame becomes an interactive drag-to-reveal slider
+    if (src.includes("fig-before-after")) {
+      return (
+        <BeforeAfter
+          before="/work/indemni/ba-before.png"
+          after="/work/indemni/ba-after.png"
+        />
+      );
+    }
     // eslint-disable-next-line @next/next/no-img-element
-    <img className="mt-6 block w-full" alt={props.alt ?? ""} {...props} />
-  ),
+    return <img className="mt-10 block w-full" alt={props.alt ?? ""} {...props} />;
+  },
 };
 
 export default async function CaseStudyPage({
@@ -67,14 +77,13 @@ export default async function CaseStudyPage({
 
   return (
     <div className="relative min-h-screen">
-      <div className="mx-auto flex max-w-[960px] gap-12 px-6 pb-28 pt-24">
-        {/* Scrollspy */}
-        <aside className="hidden w-[150px] shrink-0 lg:block">
-          <SectionTracker sections={meta.sections} />
-        </aside>
+      {/* Scrollspy — far left */}
+      <aside className="absolute inset-y-0 left-6 hidden lg:block xl:left-10">
+        <SectionTracker sections={meta.sections} />
+      </aside>
 
-        {/* Single content column — text + visuals stacked */}
-        <article className="min-w-0 flex-1 lg:max-w-[664px] lg:border-l lg:border-dashed lg:border-white/15 lg:pl-12">
+      {/* Single content column — text + visuals stacked, centered */}
+      <article className="mx-auto min-w-0 max-w-[720px] px-6 pb-28 pt-24">
           <p
             id={slugify(meta.sections[0])}
             className="scroll-mt-28 text-xs font-medium uppercase tracking-[0.14em] text-white/40"
@@ -95,14 +104,11 @@ export default async function CaseStudyPage({
           {meta.outcomes?.length > 0 && (
             <dl className="mt-10 flex flex-col gap-8">
               {meta.outcomes.map((o) => (
-                <div
-                  key={o.stat}
-                  className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:gap-6"
-                >
-                  <dt className="text-[32px] font-semibold leading-none text-white">
+                <div key={o.stat} className="flex flex-col gap-1 sm:flex-row sm:gap-8">
+                  <dt className="w-[150px] shrink-0 text-[32px] font-semibold leading-none text-white">
                     {o.stat}
                   </dt>
-                  <dd className="max-w-xs text-sm leading-6 text-white/60">
+                  <dd className="max-w-xs text-sm leading-6 text-white/55 sm:pt-1.5">
                     {o.label}
                   </dd>
                 </div>
@@ -110,7 +116,6 @@ export default async function CaseStudyPage({
             </dl>
           )}
         </article>
-      </div>
     </div>
   );
 }
