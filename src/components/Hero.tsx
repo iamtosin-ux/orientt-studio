@@ -1,5 +1,6 @@
 import Image from "next/image";
 import ShipRocket from "./ShipRocket";
+import HeroGlassLens from "./HeroGlassLens";
 
 // `cls` tunes each logo to the same optical height as Decisional —
 // wordmark-only logos (Indemni) read larger, so they get a smaller box.
@@ -15,6 +16,7 @@ const LOGOS: Logo[] = [
 export default function Hero() {
   return (
     <section className="relative z-10 flex flex-col items-center px-6 pt-[180px] text-center sm:pt-[210px]">
+      <HeroGlassLens />
       <div className="flex w-full max-w-[833px] flex-col items-center gap-10">
         <h1 className="text-balance font-normal leading-[1.15] text-[clamp(2rem,5.5vw,50px)]">
           Design studio built to help founders <ShipRocket /> ideas at venture
