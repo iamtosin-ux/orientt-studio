@@ -187,9 +187,9 @@ export default function Nav() {
 
           <button
             type="button"
-            onClick={() => setMode((m) => (m === "info" ? null : "info"))}
-            aria-label={mode === "info" ? "Close details" : "Open details"}
-            aria-expanded={mode === "info"}
+            onClick={() => setMode((m) => (m === null ? "info" : null))}
+            aria-label={mode !== null ? "Close" : "Open details"}
+            aria-expanded={mode !== null}
             className="relative grid size-10 shrink-0 place-items-center overflow-hidden rounded-full transition-transform duration-200 ease-out hover:scale-105 active:scale-100"
             style={{
               background:
@@ -198,8 +198,8 @@ export default function Nav() {
           >
             <span className="pointer-events-none absolute inset-0 rounded-full shadow-[inset_0_0_0_1px_rgba(255,255,255,0.1)]" />
             <motion.span
-              animate={{ rotate: mode === "info" ? 45 : 0 }}
-              transition={mode === "info" ? { duration: 0.4, ease: "easeIn" } : { duration: 0 }}
+              animate={{ rotate: mode !== null ? 45 : 0 }}
+              transition={mode !== null ? { duration: 0.4, ease: "easeIn" } : { duration: 0 }}
               className="grid place-items-center"
             >
               {/* A rotated plus reads as an "x" when expanded */}

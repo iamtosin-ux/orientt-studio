@@ -1,5 +1,4 @@
 import React from "react";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { compileMDX } from "next-mdx-remote/rsc";
 import type { Metadata } from "next";
@@ -74,54 +73,28 @@ export default async function CaseStudyPage({
 
   return (
     <div className="relative min-h-screen">
-      {/* Header */}
-      <header className="sticky top-0 z-40 flex items-center gap-3 border-b border-white/10 bg-background/80 px-6 py-4 backdrop-blur-md">
-        <Link
-          href="/"
-          aria-label="Back to home"
-          className="grid size-8 place-items-center rounded-lg ring-1 ring-white/15 transition-colors hover:bg-white/5"
-        >
-          <svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden>
-            <path
-              d="M12.5 15 7.5 10l5-5"
-              stroke="currentColor"
-              strokeWidth="1.67"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        </Link>
-        <span className="text-[15px] font-medium">Orientt</span>
-        <span className="text-white/25">|</span>
-        <span className="truncate text-sm text-white/55">{meta.subtitle}</span>
-      </header>
+      <div className="mx-auto flex max-w-[1320px] flex-col gap-12 px-6 pb-28 pt-24 lg:flex-row lg:justify-center lg:gap-10">
+        {/* Scrollspy */}
+        <aside className="hidden shrink-0 lg:block lg:w-[180px]">
+          <SectionTracker sections={meta.sections} />
+        </aside>
 
-      <div className="mx-auto max-w-[1320px] px-6 py-14">
-        <div className="grid gap-x-10 lg:grid-cols-[180px_minmax(0,1fr)_632px]">
-          {/* Section tracker */}
-          <aside className="hidden lg:block">
-            <SectionTracker sections={meta.sections} />
-          </aside>
+        {/* Intro (title + lead) */}
+        <div className="shrink-0 lg:w-[383px]">
+          <h1 className="text-xl font-semibold leading-7 tracking-[-0.2px]">
+            {meta.caseStudyTitle}
+          </h1>
+          {meta.intro.map((para, i) => (
+            <p key={i} className="mt-4 text-sm leading-5 text-[#d4d4d8]">
+              {para}
+            </p>
+          ))}
+        </div>
 
-          {/* Intro (title + lead) */}
-          <div className="mb-12 lg:mb-0">
-            <h1 className="max-w-[383px] text-xl font-semibold leading-7 tracking-[-0.2px]">
-              {meta.caseStudyTitle}
-            </h1>
-            {meta.intro.map((para, i) => (
-              <p
-                key={i}
-                className="mt-4 max-w-[383px] text-sm leading-5 text-[#d4d4d8]"
-              >
-                {para}
-              </p>
-            ))}
-          </div>
-
-          {/* Visual column */}
-          <div className="min-w-0 lg:border-l lg:border-white/10 lg:pl-10">
-            <div id={slugify(meta.sections[0])} className="scroll-mt-28" />
-            {body}
+        {/* Visual column */}
+        <div className="min-w-0 shrink-0 border-white/10 lg:w-[632px] lg:border-l lg:pl-12">
+          <div id={slugify(meta.sections[0])} className="scroll-mt-28" />
+          {body}
 
             {meta.outcomes?.length > 0 && (
               <section id="outcome" className="mt-16 scroll-mt-28">
@@ -145,7 +118,6 @@ export default async function CaseStudyPage({
                 </dl>
               </section>
             )}
-          </div>
         </div>
       </div>
     </div>
