@@ -26,33 +26,27 @@ export async function generateMetadata({
 const slugify = (s: string) =>
   s.toLowerCase().replace(/[^\w\s-]/g, "").trim().replace(/\s+/g, "-");
 
-// The image column is visuals-only (matching Figma). Headings become invisible
-// in-flow anchors so the section tracker can sync; prose stays for a11y/SEO.
+// Content + visuals stack in one column; headings are inline section labels.
 const mdxComponents = {
   h2: (props: React.ComponentProps<"h2">) => (
     <h2
       id={typeof props.children === "string" ? slugify(props.children) : undefined}
-      className="scroll-mt-28 m-0 h-0 overflow-hidden p-0 text-transparent"
+      className="scroll-mt-28 pt-14 text-xs font-medium uppercase tracking-[0.14em] text-white/40"
       {...props}
     />
   ),
   p: (props: React.ComponentProps<"p">) => {
-    // Markdown wraps standalone images in <p>; keep those visible.
-    // Prose paragraphs (text only) are hidden to match the visuals-only Figma.
+    // Markdown wraps standalone images in <p>; unwrap those so the image is full-bleed.
     const hasElement = React.Children.toArray(props.children).some((c) =>
       React.isValidElement(c),
     );
     if (hasElement) return <>{props.children}</>;
-    return <p className="sr-only">{props.children}</p>;
+    return <p className="mt-4 text-[15px] leading-7 text-white/60">{props.children}</p>;
   },
   // eslint-disable-next-line @next/next/no-img-element
   img: (props: React.ComponentProps<"img">) => (
     // eslint-disable-next-line @next/next/no-img-element
-    <img
-      className="mt-6 w-full rounded-2xl ring-1 ring-white/[0.08]"
-      alt={props.alt ?? ""}
-      {...props}
-    />
+    <img className="mt-6 block w-full" alt={props.alt ?? ""} {...props} />
   ),
 };
 
@@ -73,52 +67,49 @@ export default async function CaseStudyPage({
 
   return (
     <div className="relative min-h-screen">
-      <div className="mx-auto flex max-w-[1320px] flex-col gap-12 px-6 pb-28 pt-24 lg:flex-row lg:justify-center lg:gap-10">
+      <div className="mx-auto flex max-w-[960px] gap-12 px-6 pb-28 pt-24">
         {/* Scrollspy */}
-        <aside className="hidden shrink-0 lg:block lg:w-[180px]">
+        <aside className="hidden w-[150px] shrink-0 lg:block">
           <SectionTracker sections={meta.sections} />
         </aside>
 
-        {/* Intro (title + lead) */}
-        <div className="shrink-0 lg:w-[383px]">
-          <h1 className="text-xl font-semibold leading-7 tracking-[-0.2px]">
+        {/* Single content column — text + visuals stacked */}
+        <article className="min-w-0 flex-1 lg:max-w-[664px] lg:border-l lg:border-dashed lg:border-white/15 lg:pl-12">
+          <p
+            id={slugify(meta.sections[0])}
+            className="scroll-mt-28 text-xs font-medium uppercase tracking-[0.14em] text-white/40"
+          >
+            {meta.sections[0]}
+          </p>
+          <h1 className="mt-3 text-xl font-semibold leading-7 tracking-[-0.2px]">
             {meta.caseStudyTitle}
           </h1>
           {meta.intro.map((para, i) => (
-            <p key={i} className="mt-4 text-sm leading-5 text-[#d4d4d8]">
+            <p key={i} className="mt-4 text-[15px] leading-7 text-white/60">
               {para}
             </p>
           ))}
-        </div>
 
-        {/* Visual column */}
-        <div className="min-w-0 shrink-0 border-white/10 lg:w-[632px] lg:border-l lg:pl-12">
-          <div id={slugify(meta.sections[0])} className="scroll-mt-28" />
           {body}
 
-            {meta.outcomes?.length > 0 && (
-              <section id="outcome" className="mt-16 scroll-mt-28">
-                <p className="text-xs font-medium uppercase tracking-wider text-white/40">
-                  Outcome
-                </p>
-                <dl className="mt-6 flex flex-col gap-8">
-                  {meta.outcomes.map((o) => (
-                    <div
-                      key={o.stat}
-                      className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:gap-6"
-                    >
-                      <dt className="text-[32px] font-semibold leading-none text-white">
-                        {o.stat}
-                      </dt>
-                      <dd className="max-w-xs text-sm leading-6 text-white/60">
-                        {o.label}
-                      </dd>
-                    </div>
-                  ))}
-                </dl>
-              </section>
-            )}
-        </div>
+          {meta.outcomes?.length > 0 && (
+            <dl className="mt-10 flex flex-col gap-8">
+              {meta.outcomes.map((o) => (
+                <div
+                  key={o.stat}
+                  className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:gap-6"
+                >
+                  <dt className="text-[32px] font-semibold leading-none text-white">
+                    {o.stat}
+                  </dt>
+                  <dd className="max-w-xs text-sm leading-6 text-white/60">
+                    {o.label}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          )}
+        </article>
       </div>
     </div>
   );
