@@ -36,7 +36,7 @@ export default function BeforeAfter({
         src={before}
         alt="Before"
         draggable={false}
-        className="absolute inset-0 block h-full w-full object-cover"
+        className="absolute inset-0 block h-full w-full object-cover object-top"
         style={{ clipPath: `inset(0 ${100 - pos}% 0 0)` }}
       />
 
