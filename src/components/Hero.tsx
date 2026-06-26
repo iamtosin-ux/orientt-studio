@@ -1,4 +1,8 @@
+"use client";
+
+import { useRef } from "react";
 import Image from "next/image";
+import { motion, useMotionValue, useSpring } from "motion/react";
 
 // `cls` tunes each logo to the same optical height as Decisional —
 // wordmark-only logos (Indemni) read larger, so they get a smaller box.
@@ -11,17 +15,58 @@ const LOGOS: Logo[] = [
   { src: "/work/logo-decisional.svg", alt: "Decisional", width: 127, height: 24, cls: "h-6" },
 ];
 
+const EASE = [0.22, 1, 0.36, 1] as const;
+
 export default function Hero() {
+  const sectionRef = useRef<HTMLElement>(null);
+  // Magnetic follow — content drifts subtly toward the cursor
+  const mx = useMotionValue(0);
+  const my = useMotionValue(0);
+  const x = useSpring(mx, { stiffness: 150, damping: 18, mass: 0.4 });
+  const y = useSpring(my, { stiffness: 150, damping: 18, mass: 0.4 });
+
+  function handleMove(e: React.MouseEvent) {
+    const r = sectionRef.current?.getBoundingClientRect();
+    if (!r) return;
+    mx.set(((e.clientX - (r.left + r.width / 2)) / (r.width / 2)) * 16);
+    my.set(((e.clientY - (r.top + r.height / 2)) / (r.height / 2)) * 16);
+  }
+  function reset() {
+    mx.set(0);
+    my.set(0);
+  }
+
   return (
-    <section className="relative z-10 flex flex-col items-center px-6 pt-[180px] text-center sm:pt-[210px]">
-      <div className="flex w-full max-w-[1150px] flex-col items-center gap-10">
-        <h1 className="text-balance font-normal leading-[1.1] text-[clamp(3.5rem,9.6vw,88px)]">
-          Design studio built to help founders{" "}
-          <span className="font-pixel font-medium">ship</span> ideas at venture
-          speed.
+    <section
+      ref={sectionRef}
+      onMouseMove={handleMove}
+      onMouseLeave={reset}
+      className="relative z-10 flex flex-col items-center px-6 pt-[180px] text-center sm:pt-[210px]"
+    >
+      <motion.div
+        style={{ x, y }}
+        className="flex w-full max-w-[1000px] flex-col items-center gap-10"
+      >
+        {/* Headline — mask reveal on load */}
+        <h1 className="overflow-hidden text-balance font-normal leading-[1.1] text-[clamp(2.625rem,7.2vw,66px)] [padding-bottom:0.12em]">
+          <motion.span
+            className="block"
+            initial={{ y: "115%" }}
+            animate={{ y: 0 }}
+            transition={{ duration: 1, ease: EASE, delay: 0.1 }}
+          >
+            Design studio built to help founders{" "}
+            <span className="font-pixel font-medium">ship</span> ideas at venture
+            speed.
+          </motion.span>
         </h1>
 
-        <div className="flex w-full flex-col items-center gap-6">
+        <motion.div
+          className="flex w-full flex-col items-center gap-6"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: EASE, delay: 0.55 }}
+        >
           <p className="text-lg font-medium">
             Chosen by 10+ companies across AI, Finance, DevOps and more
           </p>
@@ -54,8 +99,8 @@ export default function Hero() {
               />
             </span>
           </div>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
     </section>
   );
 }
