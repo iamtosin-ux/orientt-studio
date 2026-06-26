@@ -48,8 +48,17 @@ export default function ProjectGridCard({
           style={{ x: sx, y: sy }}
           className="pointer-events-none absolute left-0 top-0 opacity-0 transition-opacity duration-200 group-hover:opacity-100"
         >
-          <span className="block -translate-x-1/2 -translate-y-1/2 rounded-[80px] border border-white/90 bg-[rgba(16,16,16,0.51)] px-5 py-2 font-pixel text-sm whitespace-nowrap text-white shadow-[inset_0_0_12px_0_rgba(255,255,255,0.08),inset_0_-8px_32px_0_#101010] backdrop-blur-md">
+          <span className="flex -translate-x-1/2 -translate-y-1/2 items-center gap-2 rounded-[80px] border border-white/90 bg-[rgba(16,16,16,0.51)] px-5 py-2 font-pixel text-sm uppercase tracking-wide whitespace-nowrap text-white shadow-[inset_0_0_12px_0_rgba(255,255,255,0.08),inset_0_-8px_32px_0_#101010] backdrop-blur-md">
             View case study
+            <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden>
+              <path
+                d="M4.17 10h11.66M11.67 5.83 15.83 10l-4.16 4.17"
+                stroke="currentColor"
+                strokeWidth="1.67"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
           </span>
         </motion.div>
       )}
