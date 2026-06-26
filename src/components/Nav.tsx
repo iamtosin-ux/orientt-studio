@@ -3,8 +3,9 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { AnimatePresence, motion } from "motion/react";
+import Cal from "@calcom/embed-react";
 
-const BOOK_A_CALL_URL = "https://cal.com/samuel-tosin/30min";
+const CAL_LINK = "samuel-tosin/30min";
 
 const SERVICES = ["Product design", "Website", "Mobile apps"];
 const PRICING_TABS = ["Basic", "Pro", "One-off"] as const;
@@ -64,20 +65,23 @@ function Check() {
   );
 }
 
+type Mode = "info" | "book" | null;
+
 export default function Nav() {
-  const [expanded, setExpanded] = useState(false);
+  const [mode, setMode] = useState<Mode>(null);
   const [tab, setTab] = useState<(typeof PRICING_TABS)[number]>("Basic");
   const navRef = useRef<HTMLElement>(null);
+  const expanded = mode !== null;
 
   useEffect(() => {
     if (!expanded) return;
 
     const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setExpanded(false);
+      if (e.key === "Escape") setMode(null);
     };
     const onPointerDown = (e: PointerEvent) => {
       if (navRef.current && !navRef.current.contains(e.target as Node)) {
-        setExpanded(false);
+        setMode(null);
       }
     };
 
@@ -90,6 +94,12 @@ export default function Nav() {
   }, [expanded]);
 
   const plan = PLANS[tab];
+  const widthClass =
+    mode === "book"
+      ? "w-[840px] max-w-[calc(100vw-1.25rem)] rounded-[28px]"
+      : mode === "info"
+        ? "w-[636px] max-w-[calc(100vw-1.25rem)] rounded-[28px]"
+        : "rounded-full";
 
   return (
     <>
@@ -100,7 +110,7 @@ export default function Nav() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1, transition: { duration: 0.3, ease: "easeIn" } }}
             exit={{ opacity: 0, transition: { duration: 0 } }}
-            onClick={() => setExpanded(false)}
+            onClick={() => setMode(null)}
             aria-hidden
             className="fixed inset-0 z-40"
             style={{
@@ -118,23 +128,18 @@ export default function Nav() {
           ref={navRef}
           layout
           transition={expanded ? { duration: 0.38, ease: "easeIn" } : { duration: 0 }}
-        style={{ background: expanded ? "rgba(13,12,12,0.6)" : "var(--nav-bg)" }}
-        className={`relative flex flex-col overflow-hidden border border-white/[0.08] p-2 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.08),0_8px_40px_-8px_rgba(0,0,0,0.6)] backdrop-blur-2xl backdrop-saturate-150 ${
-          expanded
-            ? "w-[636px] max-w-[calc(100vw-1.25rem)] rounded-[28px]"
-            : "rounded-full"
-        }`}
-      >
+          className={`relative flex flex-col overflow-hidden border border-white/[0.18] bg-white/[0.08] p-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),inset_0_-1px_0_rgba(0,0,0,0.15),0_8px_32px_rgba(0,0,0,0.35)] backdrop-blur-xl backdrop-saturate-[1.8] ${widthClass}`}
+        >
         {/* Top bar — shared across both states */}
         <motion.div layout="position" className="flex items-center justify-center gap-3 p-1">
           <a href="#top" aria-label="orientt — home" className="px-2">
             <Image src="/work/logo-orientt.svg" alt="orientt" width={69} height={30} priority />
           </a>
 
-          <a
-            href={BOOK_A_CALL_URL}
-            target="_blank"
-            rel="noopener noreferrer"
+          <button
+            type="button"
+            onClick={() => setMode((m) => (m === "book" ? null : "book"))}
+            aria-expanded={mode === "book"}
             className="group relative flex h-[39px] w-[192px] items-center justify-center gap-2 rounded-[80px] text-accent-fill transition-transform duration-200 ease-out hover:-translate-y-px active:translate-y-0"
             style={{
               boxShadow:
@@ -147,13 +152,13 @@ export default function Nav() {
             <span className="transition-transform duration-200 group-hover:translate-x-0.5">
               <ArrowRight />
             </span>
-          </a>
+          </button>
 
           <button
             type="button"
-            onClick={() => setExpanded((v) => !v)}
-            aria-label={expanded ? "Close details" : "Open details"}
-            aria-expanded={expanded}
+            onClick={() => setMode((m) => (m === "info" ? null : "info"))}
+            aria-label={mode === "info" ? "Close details" : "Open details"}
+            aria-expanded={mode === "info"}
             className="relative grid size-10 shrink-0 place-items-center overflow-hidden rounded-full transition-transform duration-200 ease-out hover:scale-105 active:scale-100"
             style={{
               background:
@@ -162,8 +167,8 @@ export default function Nav() {
           >
             <span className="pointer-events-none absolute inset-0 rounded-full shadow-[inset_0_0_0_1px_rgba(255,255,255,0.1)]" />
             <motion.span
-              animate={{ rotate: expanded ? 45 : 0 }}
-              transition={expanded ? { duration: 0.4, ease: "easeIn" } : { duration: 0 }}
+              animate={{ rotate: mode === "info" ? 45 : 0 }}
+              transition={mode === "info" ? { duration: 0.4, ease: "easeIn" } : { duration: 0 }}
               className="grid place-items-center"
             >
               {/* A rotated plus reads as an "x" when expanded */}
@@ -183,12 +188,23 @@ export default function Nav() {
         <AnimatePresence initial={false}>
           {expanded && (
             <motion.div
-              key="panel"
+              key={mode}
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: "auto", opacity: 1, transition: { duration: 0.38, ease: "easeIn" } }}
               exit={{ height: 0, opacity: 0, transition: { duration: 0 } }}
               className="overflow-hidden"
             >
+              {mode === "book" ? (
+                <div className="px-1 pb-1 pt-4">
+                  <div className="h-[560px] w-full overflow-hidden rounded-2xl">
+                    <Cal
+                      calLink={CAL_LINK}
+                      style={{ width: "100%", height: "100%", overflow: "scroll" }}
+                      config={{ theme: "dark", layout: "month_view" }}
+                    />
+                  </div>
+                </div>
+              ) : (
               <div className="flex flex-col gap-6 px-1 pb-1 pt-5">
               {/* Studio description */}
               <div className="space-y-4 px-[18px] text-[15px] leading-6 text-[#d4d4d8]">
@@ -269,6 +285,7 @@ export default function Nav() {
                 </div>
               </div>
               </div>
+              )}
             </motion.div>
           )}
         </AnimatePresence>
