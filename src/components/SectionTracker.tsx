@@ -1,18 +1,10 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 const slugify = (s: string) =>
   s.toLowerCase().replace(/[^\w\s-]/g, "").trim().replace(/\s+/g, "-");
-
-// Stable pseudo-random line widths so the minimap reads like body text
-function lineWidths(seed: number, count: number) {
-  let v = seed * 9301 + 49297;
-  return Array.from({ length: count }, () => {
-    v = (v * 9301 + 49297) % 233280;
-    return 45 + (v / 233280) * 50; // 45%–95%
-  });
-}
 
 export default function SectionTracker({ sections }: { sections: string[] }) {
   const [active, setActive] = useState(sections[0]);
@@ -41,44 +33,41 @@ export default function SectionTracker({ sections }: { sections: string[] }) {
   }, [sections]);
 
   return (
-    <nav aria-label="Sections" className="sticky top-28 flex flex-col gap-10">
-      {sections.map((section, si) => {
-        const isActive = section === active;
-        return (
-          <a
-            key={section}
-            href={`#${slugify(section)}`}
-            className="grid grid-cols-[1fr_auto] items-start gap-5"
-          >
-            <span className="relative block pt-3">
-              {/* active connector line spanning toward the label */}
-              <span
-                className={`absolute left-0 right-0 top-0 h-0.5 rounded-full transition-all duration-500 ${
-                  isActive ? "bg-[#3b6fff] opacity-100" : "opacity-0"
+    <nav aria-label="Sections" className="sticky top-28 flex flex-col">
+      <Link
+        href="/"
+        className="mb-10 flex items-center gap-2 text-base text-white/40 transition-colors hover:text-white/80"
+      >
+        <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden>
+          <path
+            d="M8.5 5.5 4 10m0 0 4.5 4.5M4 10h8.5a3.5 3.5 0 0 0 0-7"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+        Index
+      </Link>
+
+      <ul className="flex flex-col gap-[18px]">
+        {sections.map((section) => {
+          const isActive = section === active;
+          return (
+            <li key={section}>
+              <a
+                href={`#${slugify(section)}`}
+                aria-current={isActive ? "true" : undefined}
+                className={`text-[17px] transition-colors duration-200 ${
+                  isActive ? "text-white" : "text-white/35 hover:text-white/65"
                 }`}
-              />
-              <span className="flex flex-col gap-[7px]">
-                {lineWidths(si + 1, 7).map((w, i) => (
-                  <span
-                    key={i}
-                    style={{ width: `${w}%` }}
-                    className={`h-px rounded-full transition-colors duration-500 ${
-                      isActive ? "bg-[#3b6fff]/75" : "bg-white/15"
-                    }`}
-                  />
-                ))}
-              </span>
-            </span>
-            <span
-              className={`text-base transition-colors duration-300 ${
-                isActive ? "text-[#5b8cff]" : "text-white/35"
-              }`}
-            >
-              {section}
-            </span>
-          </a>
-        );
-      })}
+              >
+                {section}
+              </a>
+            </li>
+          );
+        })}
+      </ul>
     </nav>
   );
 }
