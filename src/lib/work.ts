@@ -17,6 +17,7 @@ export type ProjectMeta = {
   caseStudyTitle: string;
   intro: string[];
   sections: string[];
+  outcomes: { stat: string; label: string }[];
 };
 
 export type Project = { meta: ProjectMeta; content: string };

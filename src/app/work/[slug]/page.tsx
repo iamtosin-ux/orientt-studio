@@ -111,6 +111,27 @@ export default async function CaseStudyPage({
           ))}
 
           <div className="mt-10">{body}</div>
+
+          {meta.outcomes?.length > 0 && (
+            <section id="outcome" className="mt-16 scroll-mt-28">
+              <p className="text-sm font-medium uppercase tracking-wider text-white/50">
+                Outcome
+              </p>
+              <dl className="mt-8 flex flex-col gap-8">
+                {meta.outcomes.map((o) => (
+                  <div
+                    key={o.stat}
+                    className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:gap-6"
+                  >
+                    <dt className="text-[32px] font-semibold leading-none text-white">
+                      {o.stat}
+                    </dt>
+                    <dd className="max-w-xs text-sm leading-6 text-white/60">{o.label}</dd>
+                  </div>
+                ))}
+              </dl>
+            </section>
+          )}
         </article>
       </div>
     </div>

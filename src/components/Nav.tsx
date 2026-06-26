@@ -98,9 +98,8 @@ export default function Nav() {
         {expanded && (
           <motion.div
             initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3, ease: "easeInOut" }}
+            animate={{ opacity: 1, transition: { duration: 0.3, ease: "easeIn" } }}
+            exit={{ opacity: 0, transition: { duration: 0 } }}
             onClick={() => setExpanded(false)}
             aria-hidden
             className="fixed inset-0 z-40"
@@ -118,7 +117,7 @@ export default function Nav() {
         <motion.nav
           ref={navRef}
           layout
-          transition={{ duration: 0.4, ease: [0.65, 0, 0.35, 1] }}
+          transition={expanded ? { duration: 0.38, ease: "easeIn" } : { duration: 0 }}
         style={{ background: expanded ? "rgba(13,12,12,0.6)" : "var(--nav-bg)" }}
         className={`relative flex flex-col overflow-hidden border border-white/[0.08] p-2 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.08),0_8px_40px_-8px_rgba(0,0,0,0.6)] backdrop-blur-2xl backdrop-saturate-150 ${
           expanded
@@ -144,9 +143,7 @@ export default function Nav() {
           >
             <span className="pointer-events-none absolute inset-0 rounded-[80px] shadow-[inset_0_0_0_1px_rgba(255,255,255,1)]" />
             <span className="pointer-events-none absolute inset-0 rounded-[80px] shadow-[inset_0_0_12px_0_rgba(255,255,255,0.08),inset_0_-8px_32px_0_#2c5ada] transition-shadow duration-200 group-hover:shadow-[inset_0_0_12px_0_rgba(255,255,255,0.12),inset_0_-10px_36px_0_#2c5ada]" />
-            <span className="text-sm font-semibold underline decoration-from-font underline-offset-2">
-              Book an intro call
-            </span>
+            <span className="text-sm font-semibold">Book an intro call</span>
             <span className="transition-transform duration-200 group-hover:translate-x-0.5">
               <ArrowRight />
             </span>
@@ -166,7 +163,7 @@ export default function Nav() {
             <span className="pointer-events-none absolute inset-0 rounded-full shadow-[inset_0_0_0_1px_rgba(255,255,255,0.1)]" />
             <motion.span
               animate={{ rotate: expanded ? 45 : 0 }}
-              transition={{ duration: 0.55, ease: [0.65, 0, 0.35, 1] }}
+              transition={expanded ? { duration: 0.4, ease: "easeIn" } : { duration: 0 }}
               className="grid place-items-center"
             >
               {/* A rotated plus reads as an "x" when expanded */}
@@ -188,9 +185,8 @@ export default function Nav() {
             <motion.div
               key="panel"
               initial={{ height: 0, opacity: 0 }}
-              animate={{ height: "auto", opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.4, ease: [0.65, 0, 0.35, 1] }}
+              animate={{ height: "auto", opacity: 1, transition: { duration: 0.38, ease: "easeIn" } }}
+              exit={{ height: 0, opacity: 0, transition: { duration: 0 } }}
               className="overflow-hidden"
             >
               <div className="flex flex-col gap-6 px-1 pb-1 pt-5">

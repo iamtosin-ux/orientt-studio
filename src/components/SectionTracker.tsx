@@ -41,29 +41,37 @@ export default function SectionTracker({ sections }: { sections: string[] }) {
   }, [sections]);
 
   return (
-    <nav aria-label="Sections" className="sticky top-28 flex flex-col gap-6">
+    <nav aria-label="Sections" className="sticky top-28 flex flex-col gap-10">
       {sections.map((section, si) => {
         const isActive = section === active;
         return (
           <a
             key={section}
             href={`#${slugify(section)}`}
-            className="flex items-start gap-4"
+            className="grid grid-cols-[1fr_auto] items-start gap-5"
           >
-            <span className="flex w-[150px] flex-col gap-[7px] pt-0.5">
-              {lineWidths(si + 1, 9).map((w, i) => (
-                <span
-                  key={i}
-                  style={{ width: `${w}%` }}
-                  className={`h-px rounded-full transition-colors duration-500 ${
-                    isActive ? "bg-[#5b8cff]" : "bg-white/15"
-                  }`}
-                />
-              ))}
+            <span className="relative block pt-3">
+              {/* active connector line spanning toward the label */}
+              <span
+                className={`absolute left-0 right-0 top-0 h-0.5 rounded-full transition-all duration-500 ${
+                  isActive ? "bg-[#3b6fff] opacity-100" : "opacity-0"
+                }`}
+              />
+              <span className="flex flex-col gap-[7px]">
+                {lineWidths(si + 1, 7).map((w, i) => (
+                  <span
+                    key={i}
+                    style={{ width: `${w}%` }}
+                    className={`h-px rounded-full transition-colors duration-500 ${
+                      isActive ? "bg-[#3b6fff]/75" : "bg-white/15"
+                    }`}
+                  />
+                ))}
+              </span>
             </span>
             <span
-              className={`text-sm transition-colors duration-300 ${
-                isActive ? "font-medium text-[#5b8cff]" : "text-white/40"
+              className={`text-base transition-colors duration-300 ${
+                isActive ? "text-[#5b8cff]" : "text-white/35"
               }`}
             >
               {section}
