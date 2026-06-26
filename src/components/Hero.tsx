@@ -1,4 +1,5 @@
 import Image from "next/image";
+import ShipFlight from "./ShipFlight";
 
 // `cls` tunes each logo to the same optical height as Decisional —
 // wordmark-only logos (Indemni) read larger, so they get a smaller box.
@@ -16,13 +17,14 @@ export default function Hero() {
     <section className="relative z-10 flex flex-col items-center px-6 pt-[180px] text-center sm:pt-[210px]">
       <div className="flex w-full max-w-[833px] flex-col items-center gap-10">
         <h1 className="text-balance font-normal leading-[1.15] text-[clamp(2rem,5.5vw,50px)]">
-          Design studio built to help founders{" "}
-          <span className="font-pixel font-medium">ship</span> ideas at venture
+          Design studio built to help founders <ShipFlight /> ideas at venture
           speed.
         </h1>
 
         <div className="flex w-full flex-col items-center gap-6">
-          <p className="text-lg font-medium">Trusted by YC-startups</p>
+          <p className="text-lg font-medium">
+            Chosen by 10+ companies across AI, Finance, DevOps and more
+          </p>
           <div className="flex flex-nowrap items-center justify-center gap-8">
             {LOGOS.map((logo) => (
               <Image

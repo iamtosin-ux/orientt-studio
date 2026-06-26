@@ -6,15 +6,19 @@ type Card = {
   alt: string;
   /** Case study slug this tile links to */
   slug: string;
+  /** Optional looping video shown instead of the image */
+  video?: string;
+  /** If true, shows "Coming soon" overlay */
+  comingSoon?: boolean;
 };
 
-// 2x2 showcase grid. TODO: map each tile to its own project slug as
-// more case studies are added under content/work.
+// 2x2 showcase grid. Only the first tile (Indemni) is live with "View case study";
+// the rest show "Coming soon".
 const CARDS: Card[] = [
-  { src: "/work/work-1.png", alt: "Knowledge engine dashboard", slug: "indemni" },
+  { src: "/work/work-1.png", alt: "Knowledge engine dashboard", slug: "indemni", comingSoon: true },
   { src: "/work/work-2.png", alt: "Indemni shipments dashboard", slug: "indemni" },
-  { src: "/work/work-3.png", alt: "Indemni mobile app", slug: "indemni" },
-  { src: "/work/work-4.png", alt: "Automate browser-based workflows with AI", slug: "indemni" },
+  { src: "/work/work-3.png", alt: "Indemni mobile app", slug: "indemni", video: "/work/showreel.mp4", comingSoon: true },
+  { src: "/work/work-4.png", alt: "Project tile 4", slug: "indemni", comingSoon: true },
 ];
 
 export default function ProjectCarousel({ projects }: { projects: ProjectMeta[] }) {
@@ -30,7 +34,9 @@ export default function ProjectCarousel({ projects }: { projects: ProjectMeta[] 
           key={i}
           src={card.src}
           alt={card.alt}
-          href={slugs.has(card.slug) ? `/work/${card.slug}` : undefined}
+          video={card.video}
+          comingSoon={card.comingSoon}
+          href={slugs.has(card.slug) && !card.comingSoon ? `/work/${card.slug}` : undefined}
         />
       ))}
     </section>

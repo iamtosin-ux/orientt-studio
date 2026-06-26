@@ -9,10 +9,14 @@ export default function ProjectGridCard({
   src,
   alt,
   href,
+  video,
+  comingSoon,
 }: {
   src: string;
   alt: string;
   href?: string;
+  video?: string;
+  comingSoon?: boolean;
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const x = useMotionValue(0);
@@ -34,16 +38,28 @@ export default function ProjectGridCard({
       onMouseMove={handleMove}
       className="group relative aspect-[27/20] w-full overflow-hidden rounded-3xl ring-1 ring-white/10"
     >
-      <Image
-        src={src}
-        alt={alt}
-        fill
-        sizes="(max-width: 640px) 100vw, 680px"
-        className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.04]"
-      />
+      {video ? (
+        <video
+          src={video}
+          poster={src}
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.04]"
+        />
+      ) : (
+        <Image
+          src={src}
+          alt={alt}
+          fill
+          sizes="(max-width: 640px) 100vw, 680px"
+          className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.04]"
+        />
+      )}
       <span className="absolute inset-0 bg-black/25 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
 
-      {href && (
+      {href && !comingSoon && (
         <motion.div
           style={{ x: sx, y: sy }}
           className="pointer-events-none absolute left-0 top-0 opacity-0 transition-opacity duration-200 group-hover:opacity-100"
@@ -61,6 +77,11 @@ export default function ProjectGridCard({
             </svg>
           </span>
         </motion.div>
+      )}
+      {comingSoon && (
+        <span className="absolute inset-0 flex items-center justify-center text-sm font-medium text-white/35">
+          Coming soon
+        </span>
       )}
     </div>
   );
