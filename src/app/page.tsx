@@ -11,7 +11,7 @@ export default function Home() {
   return (
     <div id="top" className="relative min-h-screen overflow-x-hidden">
       {/* Hero section — background is scoped to this block */}
-      <div className="relative overflow-hidden">
+      <div className="relative overflow-hidden pb-32">
         <AnimatedBackground />
         <div className="relative z-10">
           <Nav />
