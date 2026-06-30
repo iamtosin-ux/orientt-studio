@@ -204,12 +204,12 @@ export default function AnimatedBackground() {
         <path d={MOUNTAIN_PATH} fill="#101010" />
       </svg>
 
-      {/* Bottom fade — blends into #101010 page background */}
+      {/* Bottom fade — hard blend into page background */}
       <div
         className="absolute bottom-0 left-0 right-0"
         style={{
-          height: "35%",
-          background: "linear-gradient(to bottom, transparent 0%, #101010 100%)",
+          height: "28%",
+          background: "linear-gradient(to bottom, transparent 0%, #101010 85%)",
         }}
       />
     </div>
