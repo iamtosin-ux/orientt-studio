@@ -18,7 +18,7 @@ export async function generateMetadata({
   const { slug } = await params;
   try {
     const { meta } = getProject(slug);
-    return { title: `${meta.title} — Orientt`, description: meta.subtitle };
+    return { title: `${meta.title} | Orientt`, description: meta.subtitle };
   } catch {
     return {};
   }
@@ -99,22 +99,20 @@ export default async function CaseStudyPage({
             </p>
           ))}
 
-          {body}
-
           {meta.outcomes?.length > 0 && (
-            <dl className="mt-10 flex flex-col gap-8">
+            <dl className="mt-10 grid grid-cols-2 gap-8">
               {meta.outcomes.map((o) => (
-                <div key={o.stat} className="flex flex-col gap-1 sm:flex-row sm:gap-8">
-                  <dt className="w-[150px] shrink-0 text-[32px] font-semibold leading-none text-white">
+                <div key={o.stat} className="flex flex-col gap-1">
+                  <dt className="text-[32px] font-semibold leading-none text-white">
                     {o.stat}
                   </dt>
-                  <dd className="max-w-xs text-sm leading-6 text-white/55 sm:pt-1.5">
-                    {o.label}
-                  </dd>
+                  <dd className="text-sm leading-6 text-white/55">{o.label}</dd>
                 </div>
               ))}
             </dl>
           )}
+
+          {body}
         </article>
     </div>
   );

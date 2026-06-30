@@ -1,8 +1,7 @@
 "use client";
 
-import { useRef } from "react";
 import Image from "next/image";
-import { motion, useMotionValue, useSpring } from "motion/react";
+import { motion } from "motion/react";
 
 // `cls` tunes each logo to the same optical height as Decisional —
 // wordmark-only logos (Indemni) read larger, so they get a smaller box.
@@ -18,44 +17,19 @@ const LOGOS: Logo[] = [
 const EASE = [0.22, 1, 0.36, 1] as const;
 
 export default function Hero() {
-  const sectionRef = useRef<HTMLElement>(null);
-  // Magnetic follow — content drifts subtly toward the cursor
-  const mx = useMotionValue(0);
-  const my = useMotionValue(0);
-  const x = useSpring(mx, { stiffness: 150, damping: 18, mass: 0.4 });
-  const y = useSpring(my, { stiffness: 150, damping: 18, mass: 0.4 });
-
-  function handleMove(e: React.MouseEvent) {
-    const r = sectionRef.current?.getBoundingClientRect();
-    if (!r) return;
-    mx.set(((e.clientX - (r.left + r.width / 2)) / (r.width / 2)) * 16);
-    my.set(((e.clientY - (r.top + r.height / 2)) / (r.height / 2)) * 16);
-  }
-  function reset() {
-    mx.set(0);
-    my.set(0);
-  }
-
   return (
-    <section
-      ref={sectionRef}
-      onMouseMove={handleMove}
-      onMouseLeave={reset}
-      className="relative z-10 flex flex-col items-center px-6 pt-[180px] text-center sm:pt-[210px]"
-    >
-      <motion.div
-        style={{ x, y }}
-        className="flex w-full max-w-[1000px] flex-col items-center gap-10"
-      >
+    <section className="relative z-10 flex flex-col items-center px-6 pt-[180px] text-center sm:pt-[210px]">
+      <div className="flex w-full max-w-[1000px] flex-col items-center gap-10">
         {/* Headline — mask reveal on load */}
-        <h1 className="overflow-hidden text-balance font-normal leading-[1.1] text-[clamp(2.625rem,7.2vw,66px)] [padding-bottom:0.12em]">
+        <h1 className="overflow-hidden font-medium leading-[1.1] text-[clamp(1.97rem,5.4vw,49.5px)] [padding-bottom:0.12em]">
           <motion.span
             className="block"
             initial={{ y: "115%" }}
             animate={{ y: 0 }}
             transition={{ duration: 1, ease: EASE, delay: 0.1 }}
           >
-            Design studio built to help founders{" "}
+            Design studio built to help founders
+            <br />
             <span className="font-pixel font-medium">ship</span> ideas at venture
             speed.
           </motion.span>
@@ -100,7 +74,7 @@ export default function Hero() {
             </span>
           </div>
         </motion.div>
-      </motion.div>
+      </div>
     </section>
   );
 }

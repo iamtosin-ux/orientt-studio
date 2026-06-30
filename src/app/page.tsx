@@ -2,6 +2,7 @@ import Nav from "@/components/Nav";
 import Hero from "@/components/Hero";
 import ProjectCarousel from "@/components/ProjectCarousel";
 import AnimatedBackground from "@/components/AnimatedBackground";
+import Footer from "@/components/Footer";
 import { getAllProjects } from "@/lib/work";
 
 export default function Home() {
@@ -9,14 +10,20 @@ export default function Home() {
 
   return (
     <div id="top" className="relative min-h-screen overflow-x-hidden">
-      <AnimatedBackground />
+      {/* Hero section — background is scoped to this block */}
+      <div className="relative overflow-hidden">
+        <AnimatedBackground />
+        <div className="relative z-10">
+          <Nav />
+          <Hero />
+        </div>
+      </div>
 
-      <Nav />
-
-      <main className="relative">
-        <Hero />
+      <main>
         <ProjectCarousel projects={projects} />
       </main>
+
+      <Footer />
     </div>
   );
 }

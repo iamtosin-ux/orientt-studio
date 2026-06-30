@@ -22,7 +22,7 @@ const pixel = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Orientt — Design studio for founders",
+  title: "Orientt | Design studio for founders",
   description:
     "Orientt is a design studio built to help founders ship ideas at venture speed.",
 };
