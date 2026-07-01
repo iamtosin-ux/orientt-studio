@@ -1,169 +1,55 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-
-// Tunable defaults (lifted from the v0 prototype's debug panel).
-const STAR_COUNT = 80;
-const COLOR_MOVEMENT = 1;
-const SPOTLIGHT_INTENSITY = 0.8;
-const LIGHT_FLARE_SPEED = 0.5;
-const LIGHT_FLARE_INTENSITY = 0.1;
-
-type Star = {
-  id: number;
-  x: number;
-  y: number;
-  size: number;
-  twinkleSpeed: number;
-  twinkleOffset: number;
-};
-
-function makeStars(count: number): Star[] {
-  return Array.from({ length: count }, (_, i) => ({
-    id: i,
-    x: Math.random() * 100,
-    y: Math.random() * 100,
-    size: Math.random() * 1.5 + 0.5,
-    twinkleSpeed: Math.random() * 0.02 + 0.01,
-    twinkleOffset: Math.random() * Math.PI * 2,
-  }));
-}
+import { useEffect } from "react";
+import { motion, useMotionValue, useSpring } from "motion/react";
 
 export default function AnimatedBackground() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const animationRef = useRef<number>(0);
-  const [mousePosition, setMousePosition] = useState({ x: 50, y: 50 });
-  const [spotlightPosition, setSpotlightPosition] = useState({ x: 50, y: 50 });
-  const [lightFlareTime, setLightFlareTime] = useState(0);
-  const [stars] = useState(() => makeStars(STAR_COUNT));
+  const mx = useMotionValue(0);
+  const my = useMotionValue(0);
+  const px = useSpring(mx, { stiffness: 40, damping: 20 });
+  const py = useSpring(my, { stiffness: 40, damping: 20 });
 
   useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      const rect = containerRef.current?.getBoundingClientRect();
-      if (!rect) return;
-      setMousePosition({
-        x: ((e.clientX - rect.left) / rect.width) * 100,
-        y: ((e.clientY - rect.top) / rect.height) * 100,
-      });
+    const onMove = (e: PointerEvent) => {
+      mx.set((e.clientX / window.innerWidth - 0.5) * 40);
+      my.set((e.clientY / window.innerHeight - 0.5) * 30);
     };
-    window.addEventListener("pointermove", handleMouseMove);
-    return () => window.removeEventListener("pointermove", handleMouseMove);
-  }, []);
-
-  // Flare time advances every frame; spotlight eases toward the cursor.
-  useEffect(() => {
-    const animate = () => {
-      setLightFlareTime((prev) => {
-        const next = prev + 0.01 * LIGHT_FLARE_SPEED;
-        return next > 100 ? 0 : next;
-      });
-      setSpotlightPosition((prev) => ({
-        x: prev.x + (mousePosition.x - prev.x) * 0.08,
-        y: prev.y + (mousePosition.y - prev.y) * 0.08,
-      }));
-      animationRef.current = requestAnimationFrame(animate);
-    };
-    animationRef.current = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(animationRef.current);
-  }, [mousePosition.x, mousePosition.y]);
+    window.addEventListener("pointermove", onMove);
+    return () => window.removeEventListener("pointermove", onMove);
+  }, [mx, my]);
 
   return (
-    <div
-      ref={containerRef}
+    <motion.div
       aria-hidden
-      className="pointer-events-none absolute inset-0 z-0 overflow-hidden"
-      style={{
-        backgroundImage: "url(/new-aurora-background.jpg)",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-        filter: `hue-rotate(${mousePosition.x * COLOR_MOVEMENT * 0.2}deg) saturate(${
-          1 + mousePosition.y * COLOR_MOVEMENT * 0.003
-        })`,
-        transition: "filter 0.3s ease-out",
-      }}
+      initial={{ opacity: 0, scale: 1.05 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 1.4, ease: "easeOut" }}
+      style={{ x: px, y: py }}
+      className="pointer-events-none fixed inset-0 -z-10 overflow-hidden"
     >
-      {/* Twinkling stars */}
-      <div className="absolute inset-0">
-        {stars.map((star) => {
-          const twinkle = Math.sin(lightFlareTime * star.twinkleSpeed + star.twinkleOffset);
-          return (
-            <div
-              key={star.id}
-              className="absolute rounded-full bg-white"
-              style={{
-                left: `${star.x}%`,
-                top: `${star.y}%`,
-                width: `${star.size}px`,
-                height: `${star.size}px`,
-                opacity: 0.3 + 0.4 * twinkle,
-                boxShadow: `0 0 ${star.size * 2}px rgba(255, 255, 255, ${0.2 + 0.3 * twinkle})`,
-                transform: "translate(-50%, -50%)",
-              }}
-            />
-          );
-        })}
-      </div>
-
-      {/* Drifting color flares */}
-      <div
-        className="absolute inset-0"
+      {/* Horizon glow */}
+      <motion.div
+        animate={{ scaleX: [1, 1.1, 1], opacity: [0.55, 0.8, 0.55] }}
+        transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute bottom-[-22%] left-1/2 h-[62vh] w-[130vw] -translate-x-1/2 rounded-[50%] blur-[130px]"
         style={{
-          background: `
-            linear-gradient(90deg,
-              transparent ${20 + ((lightFlareTime * 30) % 100)}%,
-              rgba(0, 255, 150, ${(0.6 + Math.sin(lightFlareTime * 0.4) * 0.3) * LIGHT_FLARE_INTENSITY}) ${25 + ((lightFlareTime * 30) % 100)}%,
-              rgba(0, 255, 150, ${(0.4 + Math.sin(lightFlareTime * 0.4) * 0.2) * LIGHT_FLARE_INTENSITY}) ${35 + ((lightFlareTime * 30) % 100)}%,
-              transparent ${45 + ((lightFlareTime * 30) % 100)}%),
-            linear-gradient(85deg,
-              transparent ${15 + ((lightFlareTime * 25) % 100)}%,
-              rgba(100, 200, 255, ${(0.5 + Math.cos(lightFlareTime * 0.3) * 0.25) * LIGHT_FLARE_INTENSITY}) ${20 + ((lightFlareTime * 25) % 100)}%,
-              rgba(100, 200, 255, ${(0.3 + Math.cos(lightFlareTime * 0.3) * 0.15) * LIGHT_FLARE_INTENSITY}) ${30 + ((lightFlareTime * 25) % 100)}%,
-              transparent ${40 + ((lightFlareTime * 25) % 100)}%),
-            linear-gradient(95deg,
-              transparent ${10 + ((lightFlareTime * 35) % 100)}%,
-              rgba(255, 100, 200, ${(0.4 + Math.sin(lightFlareTime * 0.5) * 0.2) * LIGHT_FLARE_INTENSITY}) ${15 + ((lightFlareTime * 35) % 100)}%,
-              rgba(255, 100, 200, ${(0.25 + Math.sin(lightFlareTime * 0.5) * 0.12) * LIGHT_FLARE_INTENSITY}) ${25 + ((lightFlareTime * 35) % 100)}%,
-              transparent ${35 + ((lightFlareTime * 35) % 100)}%)
-          `,
-          mixBlendMode: "screen",
-          mask: "linear-gradient(to bottom, white 0%, white 60%, transparent 80%)",
-          WebkitMask: "linear-gradient(to bottom, white 0%, white 60%, transparent 80%)",
+          background:
+            "radial-gradient(closest-side, rgba(44,90,218,0.55), rgba(44,90,218,0.12) 60%, transparent)",
         }}
       />
-
-      {/* Vignette that follows the cursor */}
-      <div
-        className="absolute inset-0"
-        style={{
-          background: `radial-gradient(circle at ${spotlightPosition.x}% ${spotlightPosition.y}%,
-            transparent 0%,
-            transparent 15%,
-            rgba(0, 0, 20, ${0.3 * SPOTLIGHT_INTENSITY}) 40%,
-            rgba(0, 0, 30, ${0.6 * SPOTLIGHT_INTENSITY}) 70%,
-            rgba(0, 0, 40, ${0.8 * SPOTLIGHT_INTENSITY}) 100%)`,
-          mixBlendMode: "multiply",
-          transition: "background 0.1s ease-out",
-        }}
+      {/* Drifting aurora blobs */}
+      <motion.div
+        animate={{ x: [0, 70, 0], y: [0, -34, 0] }}
+        transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute bottom-[2%] left-[18%] h-[42vh] w-[42vw] rounded-full blur-[130px]"
+        style={{ background: "radial-gradient(closest-side, rgba(74,118,240,0.32), transparent)" }}
       />
-
-      {/* Soft glow at the cursor */}
-      <div
-        className="absolute"
-        style={{
-          left: `${spotlightPosition.x}%`,
-          top: `${spotlightPosition.y}%`,
-          width: "200px",
-          height: "200px",
-          transform: "translate(-50%, -50%)",
-          background: `radial-gradient(circle,
-            rgba(255, 255, 255, ${0.1 * SPOTLIGHT_INTENSITY}) 0%,
-            rgba(255, 255, 255, ${0.05 * SPOTLIGHT_INTENSITY}) 30%,
-            transparent 70%)`,
-          filter: "blur(20px)",
-          transition: "all 0.1s ease-out",
-        }}
+      <motion.div
+        animate={{ x: [0, -56, 0], y: [0, 22, 0] }}
+        transition={{ duration: 19, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute bottom-[-4%] right-[14%] h-[38vh] w-[38vw] rounded-full blur-[130px]"
+        style={{ background: "radial-gradient(closest-side, rgba(120,80,220,0.26), transparent)" }}
       />
-    </div>
+    </motion.div>
   );
 }
