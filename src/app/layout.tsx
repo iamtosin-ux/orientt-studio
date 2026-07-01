@@ -1,10 +1,17 @@
 import type { Metadata } from "next";
-import { Geist, Inter } from "next/font/google";
+import { Geist, Inter, Dela_Gothic_One } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
 
 const geist = Geist({
   variable: "--font-sans",
+  subsets: ["latin"],
+});
+
+// Display face for the hero headline
+const dela = Dela_Gothic_One({
+  weight: "400",
+  variable: "--font-dela",
   subsets: ["latin"],
 });
 
@@ -35,7 +42,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geist.variable} ${pixel.variable} ${inter.variable} h-full antialiased`}
+      className={`${geist.variable} ${pixel.variable} ${inter.variable} ${dela.variable} h-full antialiased`}
     >
       <body className="min-h-full bg-background text-foreground font-sans">
         {children}
