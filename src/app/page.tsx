@@ -2,6 +2,7 @@ import Nav from "@/components/Nav";
 import Hero from "@/components/Hero";
 import ProjectCarousel from "@/components/ProjectCarousel";
 import AnimatedBackground from "@/components/AnimatedBackground";
+import Footer from "@/components/Footer";
 import { getAllProjects } from "@/lib/work";
 
 export default function Home() {
@@ -17,6 +18,8 @@ export default function Home() {
         <Hero />
         <ProjectCarousel projects={projects} />
       </main>
+
+      <Footer />
     </div>
   );
 }
