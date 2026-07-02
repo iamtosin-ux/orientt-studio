@@ -32,7 +32,7 @@ export default function Footer() {
       </div>
 
       <div className="flex flex-wrap items-center justify-center gap-6 border-t border-white/10 pt-6 text-white/40">
-        <span>© 2015-2026</span>
+        <span>© {new Date().getFullYear()}</span>
         {LEGAL_LINKS.map((link) => (
           <Link
             key={link.href}
