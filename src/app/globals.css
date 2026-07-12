@@ -24,6 +24,7 @@
   --font-pixel: var(--font-pixel), ui-monospace, monospace;
   --font-inter: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-dela: var(--font-dela), ui-sans-serif, system-ui, sans-serif;
+  --font-fraunces: var(--font-fraunces), ui-serif, Georgia, serif;
 }
 
 html {
@@ -60,4 +61,47 @@ body {
 }
 .marquee-paused {
   animation-play-state: paused;
+}
+
+/* Reduced motion — drop the constant-motion loop (vestibular trigger).
+   Short hover/color transitions are kept: they aid comprehension. */
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee {
+    animation: none;
+  }
+}
+
+/* ── Trip dossier — scoped light/editorial theme ─────────────────────────
+   Kept local to `.dossier` so the rest of the (dark) site is untouched. */
+.dossier {
+  --paper: #f4f1ea;
+  --paper-2: #efeae0;
+  --surface: #fffefa;
+  --ink: #201d18;
+  --ink-2: #5c554b;
+  --ink-3: #938b7e;
+  --line: #e7e1d5;
+  --line-2: #d9d1c2;
+  --brand: #2c5ada;
+  --brand-ink: #21409c;
+
+  background: var(--paper);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+.dossier ::selection {
+  background: color-mix(in srgb, var(--brand) 22%, transparent);
+}
+/* Editorial display type: negative tracking on large headings (Apple §15). */
+.dossier-display {
+  letter-spacing: -0.021em;
+  line-height: 1.02;
+}
+/* Reduced motion: components already gate transforms via useReducedMotion;
+   this is the CSS-only backstop for hover/press affordances. */
+@media (prefers-reduced-motion: reduce) {
+  .dossier * {
+    scroll-behavior: auto;
+  }
 }
