@@ -191,7 +191,7 @@ export default function EditableCopy({ initial }: { initial: string }) {
               left: pos.left,
               transform: "translateY(-50%)",
             }}
-            className="z-[200] select-none"
+            className="z-[200] hidden select-none lg:block"
           >
             <div className="flex items-center gap-1 rounded-xl border border-black/5 bg-white p-1 shadow-[0_10px_34px_rgba(0,0,0,0.22)]">
                   <button
