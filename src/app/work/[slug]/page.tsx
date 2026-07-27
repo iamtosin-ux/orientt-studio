@@ -5,6 +5,8 @@ import type { Metadata } from "next";
 import { getProject, getProjectSlugs } from "@/lib/work";
 import SectionTracker from "@/components/SectionTracker";
 import BeforeAfter from "@/components/BeforeAfter";
+import JsonLd from "@/components/JsonLd";
+import { breadcrumbSchema, caseStudySchema } from "@/lib/structured-data";
 
 export function generateStaticParams() {
   return getProjectSlugs().map((slug) => ({ slug }));
@@ -18,7 +20,25 @@ export async function generateMetadata({
   const { slug } = await params;
   try {
     const { meta } = getProject(slug);
-    return { title: `${meta.title} | Orientt`, description: meta.subtitle };
+    const path = `/work/${slug}`;
+    return {
+      title: meta.title,
+      description: meta.subtitle,
+      alternates: { canonical: path },
+      openGraph: {
+        type: "article",
+        url: path,
+        title: `${meta.title} | Orientt`,
+        description: meta.subtitle,
+        images: meta.cover ? [{ url: meta.cover }] : undefined,
+      },
+      twitter: {
+        card: "summary_large_image",
+        title: `${meta.title} | Orientt`,
+        description: meta.subtitle,
+        images: meta.cover ? [meta.cover] : undefined,
+      },
+    };
   } catch {
     return {};
   }
@@ -77,6 +97,21 @@ export default async function CaseStudyPage({
 
   return (
     <div className="relative min-h-screen">
+      <JsonLd
+        data={caseStudySchema({
+          title: meta.caseStudyTitle || meta.title,
+          description: meta.subtitle,
+          path: `/work/${slug}`,
+          image: meta.cover,
+        })}
+      />
+      <JsonLd
+        data={breadcrumbSchema([
+          { name: "Home", path: "/" },
+          { name: "Work", path: "/#work" },
+          { name: meta.title, path: `/work/${slug}` },
+        ])}
+      />
       {/* Scrollspy — far left */}
       <aside className="absolute inset-y-0 left-6 hidden lg:block xl:left-10">
         <SectionTracker sections={meta.sections} />

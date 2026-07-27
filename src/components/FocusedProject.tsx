@@ -56,7 +56,7 @@ export default function FocusedProject({
             onClick={(e) => e.stopPropagation()}
             className="relative z-10 flex w-full max-w-[520px] flex-col gap-4"
           >
-            <div className="group relative aspect-[513/378] w-full overflow-hidden rounded-3xl ring-1 ring-white/10">
+            <div className="group relative aspect-[513/378] w-full overflow-hidden rounded-3xl">
               <Image
                 src={project.cover}
                 alt={project.title}

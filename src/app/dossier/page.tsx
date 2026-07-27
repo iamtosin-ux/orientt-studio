@@ -5,6 +5,7 @@ import { DOSSIER } from "@/lib/dossier";
 export const metadata: Metadata = {
   title: `${DOSSIER.title} · Travel dossier`,
   description: DOSSIER.intro,
+  alternates: { canonical: "/dossier" },
 };
 
 export default function DossierPage() {

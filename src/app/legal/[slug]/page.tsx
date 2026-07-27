@@ -15,7 +15,17 @@ export async function generateMetadata({
   const { slug } = await params;
   try {
     const doc = getLegalDoc(slug);
-    return { title: `${doc.caseStudyTitle} | Orientt` };
+    return {
+      title: doc.caseStudyTitle,
+      description: doc.intro?.[0],
+      alternates: { canonical: `/legal/${slug}` },
+      openGraph: {
+        type: "article",
+        url: `/legal/${slug}`,
+        title: `${doc.caseStudyTitle} | Orientt`,
+        description: doc.intro?.[0],
+      },
+    };
   } catch {
     return {};
   }

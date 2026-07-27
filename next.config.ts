@@ -4,6 +4,11 @@ import createMDX from "@next/mdx";
 const nextConfig: NextConfig = {
   // Allow .md / .mdx alongside the usual page extensions
   pageExtensions: ["ts", "tsx", "js", "jsx", "md", "mdx"],
+  // Next 16 only serves whitelisted image qualities; 90 keeps screenshot-style
+  // project images crisp (default is 75, which softens fine UI detail).
+  images: {
+    qualities: [75, 90],
+  },
   async headers() {
     return [
       {

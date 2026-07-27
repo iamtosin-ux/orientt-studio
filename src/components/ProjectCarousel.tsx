@@ -12,11 +12,11 @@ type Card = {
 
 // Live case study leads, full width; the rest follow in a 2x2 grid.
 const CARDS: Card[] = [
-  { src: "/work/work-2.png", alt: "Indemni shipments dashboard", slug: "indemni" },
-  { src: "/work/work-1.png", alt: "Knowledge engine dashboard", slug: "indemni" },
-  { src: "/work/work-3.png", alt: "Indemni mobile app", slug: "indemni", video: "/work/showreel.mp4" },
+  { src: "/work/work-2.webp", alt: "Indemni shipments dashboard", slug: "indemni" },
+  { src: "/work/work-1.webp", alt: "Knowledge engine dashboard", slug: "indemni" },
+  { src: "/work/work-3.webp", alt: "Indemni mobile app", slug: "indemni", video: "/work/showreel.mp4" },
   { src: "/work/work-4.webp", alt: "Skyvern", slug: "indemni" },
-  { src: "/work/work-5.png", alt: "Catapult", slug: "indemni" },
+  { src: "/work/work-5.webp", alt: "Catapult", slug: "indemni" },
 ];
 
 export default function ProjectCarousel({ projects }: { projects: ProjectMeta[] }) {

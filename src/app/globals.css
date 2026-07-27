@@ -11,6 +11,9 @@
   /* Surfaces */
   --nav-bg: rgba(13, 12, 12, 0.5);
   --card-border: #333333;
+
+  /* Expo-out easing used by the Figma-style selection frame */
+  --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @theme inline {
@@ -38,6 +41,21 @@ body {
   text-rendering: optimizeLegibility;
 }
 
+/* Translucent material for floating chrome (menus, panels). Apple §12: a light
+   material that lets the page read through; §12/§14 fallbacks keep it legible. */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.85);
+  -webkit-backdrop-filter: blur(24px) saturate(1.5);
+  backdrop-filter: blur(24px) saturate(1.5);
+}
+@media (prefers-reduced-transparency: reduce) {
+  .glass-panel {
+    background: #ffffff;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
+
 /* Hide scrollbar on horizontal scrollers while keeping scroll */
 .no-scrollbar {
   -ms-overflow-style: none;
@@ -61,6 +79,37 @@ body {
 }
 .marquee-paused {
   animation-play-state: paused;
+}
+
+/* Figma-style selection frame (FigmaFrame): border draws open, corner
+   handles pop in one by one, the W×H badge fades up. */
+@keyframes bbox-open {
+  from {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+@keyframes bbox-handle {
+  from {
+    opacity: 0;
+    transform: scale(0);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+@keyframes bbox-badge {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 /* Reduced motion — drop the constant-motion loop (vestibular trigger).

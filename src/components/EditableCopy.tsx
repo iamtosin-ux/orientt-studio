@@ -95,8 +95,9 @@ export default function EditableCopy({ initial }: { initial: string }) {
           top = r.bottom + 8 + th / 2;
           left = Math.min(Math.max(8, r.left), vw - tw - 8);
         } else {
-          top = r.top + r.height / 2; // vertical center of the word
-          left = r.right + 14;
+          // Sit above the word, horizontally centered over it (clamped on-screen).
+          top = r.top - 10 - th / 2;
+          left = Math.min(Math.max(8, r.left + r.width / 2 - tw / 2), vw - tw - 8);
         }
         setPos((p) => (p.top === top && p.left === left ? p : { top, left }));
 

@@ -143,7 +143,7 @@ export default function PastProjects() {
   return (
     <section className="pt-10">
       <div className="w-full">
-        <h2 className="text-sm text-white/40">Past projects include</h2>
+        <h2 className="text-base font-semibold text-white">Past projects include</h2>
 
         {/* 3×3 on desktop (5 logos + "Your project"), 2-up on mobile */}
         <div className="mt-4 grid grid-cols-2 items-center gap-x-8 gap-y-2 sm:grid-cols-3">

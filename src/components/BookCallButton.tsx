@@ -24,7 +24,7 @@ export default function BookCallButton({ className = "" }: { className?: string 
       type="button"
       data-cal-link={CAL_LINK}
       data-cal-config='{"layout":"month_view","theme":"dark"}'
-      className={`group inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium text-white transition-transform duration-200 ease-out hover:-translate-y-px active:translate-y-0 ${className}`}
+      className={`group inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium text-white transition-transform duration-150 ease-out hover:-translate-y-px active:translate-y-0 active:scale-[0.97] ${className}`}
       style={{
         background:
           "linear-gradient(180deg, #6e6e74 0%, #47474d 55%, #37373c 100%)",

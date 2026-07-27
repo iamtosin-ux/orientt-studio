@@ -1,19 +1,20 @@
 import ProjectGridCard from "./ProjectGridCard";
 import type { ProjectMeta } from "@/lib/work";
 
-// Visual project cards — hover reveals "view case study" on the linked one.
+// Visual project cards — presentational only for now (not clickable, no hover).
 const CARDS: { src: string; alt: string; video?: string; wide?: boolean }[] = [
-  { src: "/work/work-2.png", alt: "Indemni shipments dashboard", wide: true },
-  { src: "/work/work-1.png", alt: "Indemni knowledge engine" },
-  { src: "/work/work-3.png", alt: "Indemni mobile app", video: "/work/showreel.mp4" },
+  { src: "/work/indemni-image.png", alt: "Indemni shipments dashboard", wide: true },
+  { src: "/work/work-1.webp", alt: "Indemni knowledge engine" },
+  { src: "/work/work-3.webp", alt: "Indemni mobile app", video: "/work/showreel.mp4" },
   { src: "/work/work-4.webp", alt: "Skyvern" },
-  { src: "/work/work-5.png", alt: "Catapult" },
+  { src: "/work/work-5.webp", alt: "Catapult" },
+  { src: "/work/jobclarity.webp", alt: "JobClarity notes workspace" },
+  { src: "/work/statisfy.webp", alt: "Statisfy workflow studio" },
+  { src: "/work/CoreOS.png", alt: "Core OS" },
+  { src: "/work/initiativ.webp", alt: "Initiativ carbon-compliance platform" },
 ];
 
-export default function WorkList({ projects }: { projects: ProjectMeta[] }) {
-  const slugs = new Set(projects.map((p) => p.slug));
-  const caseStudyHref = slugs.has("indemni") ? "/work/indemni" : undefined;
-
+export default function WorkList({}: { projects: ProjectMeta[] }) {
   return (
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
       {CARDS.map((card, i) => (
@@ -23,8 +24,6 @@ export default function WorkList({ projects }: { projects: ProjectMeta[] }) {
             alt={card.alt}
             video={card.video}
             wide={card.wide}
-            onLight
-            href={card.wide ? caseStudyHref : undefined}
           />
         </div>
       ))}
