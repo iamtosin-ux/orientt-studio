@@ -1,4 +1,5 @@
 import Image from "next/image";
+import LazyVideo from "./LazyVideo";
 
 // Presentational project card — static for now: no links, no hover effects.
 // (Interactivity — case-study links, hover chip, toast — intentionally removed;
@@ -8,12 +9,15 @@ export default function ProjectGridCard({
   alt,
   video,
   wide,
+  animated,
 }: {
   src: string;
   alt: string;
   href?: string;
   video?: string;
   wide?: boolean;
+  // Set for animated web/gif assets that next/image would flatten to one frame.
+  animated?: boolean;
 }) {
   const mediaCls = "absolute inset-0 h-full w-full object-cover";
 
@@ -24,11 +28,11 @@ export default function ProjectGridCard({
       }`}
     >
       {video ? (
-        <video src={video} poster={src} autoPlay muted loop playsInline className={mediaCls} />
-      ) : src.endsWith(".webp") ? (
-        // animated .webp — plain <img> so the optimizer doesn't flatten it to one frame
+        <LazyVideo src={video} poster={src} className={mediaCls} />
+      ) : animated ? (
+        // Animated asset — plain <img> so the optimizer doesn't flatten it.
         // eslint-disable-next-line @next/next/no-img-element
-        <img src={src} alt={alt} className={mediaCls} />
+        <img src={src} alt={alt} loading="lazy" decoding="async" className={mediaCls} />
       ) : (
         <Image
           src={src}

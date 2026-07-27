@@ -7,6 +7,8 @@ const nextConfig: NextConfig = {
   // Next 16 only serves whitelisted image qualities; 90 keeps screenshot-style
   // project images crisp (default is 75, which softens fine UI detail).
   images: {
+    // AVIF first (≈20-30% smaller than WebP), WebP fallback.
+    formats: ["image/avif", "image/webp"],
     qualities: [75, 90],
   },
   async headers() {
