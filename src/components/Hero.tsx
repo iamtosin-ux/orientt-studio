@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import { motion, useReducedMotion } from "motion/react";
 import { getCalApi } from "@calcom/embed-react";
+import { CAL_NAMESPACE } from "@/lib/links";
 import BookCallButton from "./BookCallButton";
 import EditableCopy from "./EditableCopy";
 
@@ -23,9 +24,10 @@ export default function Hero() {
   });
 
   // Cal.com popup — "Book a call" opens the calendar in a modal overlay.
+  // The namespace must match the one on every trigger button (data-cal-namespace).
   useEffect(() => {
     (async () => {
-      const cal = await getCalApi();
+      const cal = await getCalApi({ namespace: CAL_NAMESPACE });
       cal("ui", { theme: "dark", hideEventTypeDetails: false, layout: "month_view" });
     })();
   }, []);

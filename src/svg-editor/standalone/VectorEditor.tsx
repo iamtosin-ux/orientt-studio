@@ -11,7 +11,7 @@
 // Pure pointer math, no deps. Coordinates are the SVG's own user units; we map
 // screen → user space through the live CTM so it stays correct at any size.
 
-import { useRef, type PointerEvent as RPointerEvent } from "react";
+import { useEffect, useRef, type PointerEvent as RPointerEvent } from "react";
 import type { Anchor, Vec, VectorPath } from "./types";
 import { serializePath } from "./parse";
 import { sub, add } from "./types";
@@ -80,7 +80,9 @@ export function VectorEditor({
   const drag = useRef<Drag | null>(null);
   // latest path (so a coalesced rAF reads current state, not a stale closure)
   const pathRef = useRef(path);
-  pathRef.current = path;
+  useEffect(() => {
+    pathRef.current = path;
+  }, [path]);
   const pending = useRef<Vec | null>(null);
   const rafMove = useRef(0);
 

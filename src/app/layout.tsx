@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Inter, Dela_Gothic_One, Fraunces } from "next/font/google";
 import localFont from "next/font/local";
 import { Toaster } from "sonner";
+import { Analytics } from "@vercel/analytics/next";
 import JsonLd from "@/components/JsonLd";
 import { organizationGraph } from "@/lib/structured-data";
 import {
@@ -119,6 +120,7 @@ export default function RootLayout({
             },
           }}
         />
+        <Analytics />
       </body>
     </html>
   );

@@ -57,10 +57,8 @@ export function FigmaFrame({
   }, []);
 
   useEffect(() => {
-    if (width != null && height != null) {
-      setSize({ w: width, h: height });
-      return;
-    }
+    // Fixed size from props → no measuring needed (`size` is unused in this case).
+    if (width != null && height != null) return;
     const el = ref.current;
     if (!el) return;
     const ro = new ResizeObserver(() => {

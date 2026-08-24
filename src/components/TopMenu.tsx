@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import { CAL_LINK, X_URL } from "@/lib/links";
+import { CAL_LINK, CAL_NAMESPACE, X_URL } from "@/lib/links";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -106,8 +106,9 @@ export default function TopMenu({ openUp = false, onLight = false }: { openUp?: 
               ))}
               <motion.button
                 type="button"
+                data-cal-namespace={CAL_NAMESPACE}
                 data-cal-link={CAL_LINK}
-                data-cal-config='{"layout":"month_view","theme":"dark"}'
+                data-cal-config='{"layout":"month_view","theme":"dark","useSlotsViewOnSmallScreen":"true"}'
                 onClick={close}
                 variants={{ hidden: { opacity: 0, y: reduce ? 0 : 6 }, show: { opacity: 1, y: 0 } }}
                 className={item}

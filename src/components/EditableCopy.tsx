@@ -104,11 +104,13 @@ export default function EditableCopy({ initial }: { initial: string }) {
         const w = Math.round(r.width);
         const h = Math.round(r.height);
         setDims((d) => (d.w === w && d.h === h ? d : { w, h }));
+
+        // Reveal only once we have a real measurement (avoids a flash at 0,0).
+        setReady((r) => r || true);
       }
       raf = requestAnimationFrame(place);
     };
     place();
-    setReady(true);
     return () => cancelAnimationFrame(raf);
   }, []);
 

@@ -3,8 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import Cal from "@calcom/embed-react";
-
-const CAL_LINK = "samuel-tosin/30min";
+import { CAL_LINK, CAL_NAMESPACE } from "@/lib/links";
 
 const SERVICES = ["Product design", "Website", "Mobile apps"];
 const PRICING_TABS = ["Basic", "Pro"] as const;
@@ -263,6 +262,7 @@ export default function Nav() {
                 <div className="px-1 pb-1 pt-4">
                   <div className="h-[560px] w-full overflow-hidden rounded-2xl">
                     <Cal
+                      namespace={CAL_NAMESPACE}
                       calLink={CAL_LINK}
                       style={{ width: "100%", height: "100%", overflow: "scroll" }}
                       config={{ theme: "dark", layout: "month_view" }}

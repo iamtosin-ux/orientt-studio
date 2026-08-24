@@ -1,6 +1,6 @@
 "use client";
 
-import { CAL_LINK } from "@/lib/links";
+import { CAL_LINK, CAL_NAMESPACE } from "@/lib/links";
 
 function ChevronRight() {
   return (
@@ -22,8 +22,9 @@ export default function BookCallButton({ className = "" }: { className?: string 
   return (
     <button
       type="button"
+      data-cal-namespace={CAL_NAMESPACE}
       data-cal-link={CAL_LINK}
-      data-cal-config='{"layout":"month_view","theme":"dark"}'
+      data-cal-config='{"layout":"month_view","theme":"dark","useSlotsViewOnSmallScreen":"true"}'
       className={`group inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium text-white transition-transform duration-150 ease-out hover:-translate-y-px active:translate-y-0 active:scale-[0.97] ${className}`}
       style={{
         background:
