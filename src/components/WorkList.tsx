@@ -11,7 +11,7 @@ const CARDS: {
   wide?: boolean;
   toggle?: { light: string; dark: string };
 }[] = [
-  { src: "/work/indemni-image.png", alt: "Indemni shipments dashboard", wide: true },
+  { src: "/work/New indemni image.png", alt: "Indemni shipments dashboard", wide: true },
   { src: "/work/work-1.webp", alt: "Indemni knowledge engine" },
   { src: "/work/work-3.webp", alt: "Indemni mobile app", video: "/work/showreel.mp4" },
   { src: "/work/work-4.webp", alt: "Skyvern", video: "/work/skyvern.mp4" },
