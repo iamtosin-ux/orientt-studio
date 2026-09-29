@@ -61,11 +61,13 @@ export default function TryMona() {
                   fullWidth
                 />
               </PillAligned>
-              {/* Video placeholder — same size as the letter below */}
+              {/* Intro video from Sam — same size as the letter below */}
               <PillAligned className="mt-10">
-                <div
-                  aria-hidden
-                  className="aspect-[4096/2394] w-full rounded-2xl bg-neutral-800 outline outline-1 -outline-offset-1 outline-white/10"
+                <TestimonialVideo
+                  src="/work/mona-intro.mp4"
+                  poster="/work/mona-intro.jpg"
+                  label="A message from Sam at Orientt"
+                  className="aspect-[4096/2394] rounded-2xl"
                 />
               </PillAligned>
 
