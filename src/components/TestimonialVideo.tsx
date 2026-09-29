@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
+import { trackEvent } from "./PageViewTracker";
 
 // Click-to-play testimonial: poster + play button until started, then native
 // controls with sound. `preload="none"` keeps the file off the initial load.
@@ -24,6 +25,7 @@ export default function TestimonialVideo({
 
   const play = () => {
     setStarted(true);
+    trackEvent("video-play", label);
     ref.current?.play().catch(() => {});
   };
 

@@ -12,6 +12,7 @@ import TestimonialCards from "@/components/TestimonialCards";
 import Services from "@/components/Services";
 import Footer from "@/components/Footer";
 import ScrollProgress from "@/components/ScrollProgress";
+import PageViewTracker from "@/components/PageViewTracker";
 import { SITE_URL } from "@/lib/seo";
 
 // Personalised outreach page — home page format, minus services, pricing and
@@ -157,6 +158,7 @@ export default function TryMona() {
 
       <Footer />
       <ScrollProgress />
+      <PageViewTracker />
     </div>
   );
 }
