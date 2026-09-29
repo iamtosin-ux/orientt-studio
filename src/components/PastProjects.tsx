@@ -139,7 +139,8 @@ function LogoItem({ logo }: { logo: Logo }) {
   );
 }
 
-export default function PastProjects() {
+// `projectHref` — where the "Your project" pill points (pricing on the home page).
+export default function PastProjects({ projectHref = "#pricing" }: { projectHref?: string } = {}) {
   return (
     <section className="pt-10">
       <div className="w-full">
@@ -152,9 +153,9 @@ export default function PastProjects() {
           ))}
 
           {/* next project — animated border beam */}
-          <BorderBeam size="line" colorVariant="colorful" strength={0.43} className="w-fit">
+          <BorderBeam size="line" colorVariant="colorful" strength={0.43} className="w-fit" data-your-project>
             <a
-              href="#pricing"
+              href={projectHref}
               className="group inline-flex items-center gap-1 rounded-full bg-neutral-950 px-3.5 py-1.5 text-sm font-medium text-neutral-400 transition-colors hover:text-neutral-200"
             >
               Your project

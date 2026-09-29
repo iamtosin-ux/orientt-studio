@@ -27,7 +27,24 @@ function UpRight() {
 
 // Grid trigger + expanding menu panel. `openUp` flips it to grow upward (for the
 // bottom bar); `onLight` uses dark dots for placement on a light surface.
-export default function TopMenu({ openUp = false, onLight = false }: { openUp?: boolean; onLight?: boolean }) {
+type MenuLink = { label: string; href: string; external?: boolean };
+
+const DEFAULT_LINKS: MenuLink[] = [
+  { label: "Work", href: "#work" },
+  { label: "Pricing", href: "#pricing" },
+];
+
+// `links` replaces the in-page anchors (Book a Call is always appended) — e.g.
+// personalised pages without Work/Pricing sections link out to the main site.
+export default function TopMenu({
+  openUp = false,
+  onLight = false,
+  links = DEFAULT_LINKS,
+}: {
+  openUp?: boolean;
+  onLight?: boolean;
+  links?: MenuLink[];
+}) {
   const [open, setOpen] = useState(false);
   const reduce = useReducedMotion();
   const ref = useRef<HTMLDivElement>(null);
@@ -90,13 +107,11 @@ export default function TopMenu({ openUp = false, onLight = false }: { openUp?: 
               variants={{ show: { transition: { staggerChildren: 0.045, delayChildren: 0.06 } } }}
               className="flex flex-col gap-0.5"
             >
-              {[
-                { label: "Work", href: "#work" },
-                { label: "Pricing", href: "#pricing" },
-              ].map((it) => (
+              {links.map((it) => (
                 <motion.a
                   key={it.label}
                   href={it.href}
+                  {...(it.external && { target: "_blank", rel: "noopener noreferrer" })}
                   onClick={close}
                   variants={{ hidden: { opacity: 0, y: reduce ? 0 : 6 }, show: { opacity: 1, y: 0 } }}
                   className={item}

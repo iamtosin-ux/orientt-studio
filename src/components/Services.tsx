@@ -53,13 +53,21 @@ const SERVICES: { name: string; icon: ReactNode }[] = [
   },
 ];
 
-export default function Services() {
+// `title` / `className` let personalised pages reuse the list with their own
+// heading and layout (the home page keeps it centred at 640px).
+export default function Services({
+  title = "Services",
+  className = "mx-auto max-w-[640px]",
+}: {
+  title?: string;
+  className?: string;
+} = {}) {
   const reduce = useReducedMotion();
   return (
-    <div className="mx-auto max-w-[640px]">
-      {/* eyebrow + numbered service list, centred in the section */}
+    <div className={className}>
+      {/* eyebrow + numbered service list */}
       <div>
-        <p className="text-base font-semibold text-white">Services</p>
+        <p className="text-base font-semibold text-white">{title}</p>
         <motion.ul
           initial="hidden"
           whileInView="show"
