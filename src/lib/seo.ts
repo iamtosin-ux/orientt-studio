@@ -70,7 +70,7 @@ export const AREAS_SERVED = [
 
 export const CONTACT = {
   email: "hello@orientt.com",
-  booking: "https://cal.com/samuel-tosin/30min",
+  booking: "https://cal.com/orienttstudio/45min",
   whatsapp: "https://wa.me/message/RBECE7Z2MUSAE1",
 };
 
