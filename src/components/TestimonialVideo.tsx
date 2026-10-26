@@ -30,7 +30,7 @@ export default function TestimonialVideo({
   };
 
   return (
-    <div className={`relative w-full overflow-hidden bg-neutral-800 outline outline-1 -outline-offset-1 outline-white/10 ${className}`}>
+    <div className={`@container relative w-full overflow-hidden bg-neutral-800 outline outline-1 -outline-offset-1 outline-white/10 ${className}`}>
       <video
         ref={ref}
         src={src}
@@ -53,8 +53,9 @@ export default function TestimonialVideo({
               {caption}
             </span>
           )}
-          <span className="grid size-16 place-items-center rounded-full bg-white/15 text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.35),0_8px_24px_rgba(0,0,0,0.35)] ring-1 ring-white/25 backdrop-blur-md transition-transform duration-200 ease-out group-hover:scale-105 group-active:scale-[0.97]">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden className="translate-x-px">
+          {/* Scales with the frame (container units) so small tiles keep it in proportion. */}
+          <span className="grid size-[clamp(36px,22cqw,64px)] place-items-center rounded-full bg-white/15 text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.35),0_8px_24px_rgba(0,0,0,0.35)] ring-1 ring-white/25 backdrop-blur-md transition-transform duration-200 ease-out group-hover:scale-105 group-active:scale-[0.97]">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden className="size-[34%] translate-x-[6%]">
               <path d="M8 5.5v13a1 1 0 0 0 1.52.85l10.4-6.5a1 1 0 0 0 0-1.7L9.52 4.65A1 1 0 0 0 8 5.5Z" />
             </svg>
           </span>
